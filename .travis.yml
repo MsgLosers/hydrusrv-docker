@@ -1,0 +1,23 @@
+env:
+  - DOCKER_COMPOSE_VERSION=1.21.1
+sudo: required
+services:
+  - docker
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+install:
+  - cp hydrusrv/storage/app.db.template data/app.db
+  - cp hydrusrv/.env.example hydrusrv/.env
+  - sed -i 's/APP_DB_PATH=.\/storage\/app.db/APP_DB_PATH=\/data\/app.db/g' hydrusrv/.env
+  - sed -i 's/HYDRUS_SERVER_DB_PATH=/HYDRUS_SERVER_DB_PATH=\/data\/server.db/g' hydrusrv/.env
+  - sed -i 's/HYDRUS_MASTER_DB_PATH=/HYDRUS_MASTER_DB_PATH=\/data\/server.master.db/g' hydrusrv/.env
+  - sed -i 's/HYDRUS_MAPPINGS_DB_PATH=/HYDRUS_MAPPINGS_DB_PATH=\/data\/server.mappings.db/g' hydrusrv/.env
+  - sed -i 's/HYDRUS_FILES_PATH=/HYDRUS_FILES_PATH=\/data\/server_files/g' hydrusrv/.env
+  - docker-compose build
+  - docker-compose up -d
+script:
+  - '[ $(docker ps | grep -c hydrusrv-docker) -eq 2 ]'
+  - docker inspect -f "{{ .State.Running }}" $(docker ps -aq) | grep -zoPq "true\ntrue"

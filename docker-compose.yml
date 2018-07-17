@@ -1,0 +1,20 @@
+version: '3.6'
+services:
+  hydrus:
+    build: ./hydrus
+    restart: always
+    ports:
+      - '45870:45870'
+      - '45871:45871'
+      - '45872:45872'
+    volumes:
+      - './data:/data'
+  hydrusrv:
+    build: ./hydrusrv
+    depends_on:
+      - hydrus
+    restart: always
+    ports:
+      - '8000:8000'
+    volumes:
+      - './data:/data'

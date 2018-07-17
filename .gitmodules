@@ -1,0 +1,4 @@
+[submodule "hydrusrv"]
+  path = hydrusrv
+  url = https://github.com/mserajnik/hydrusrv
+  branch = master
