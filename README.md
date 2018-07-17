@@ -28,7 +28,7 @@ The easiest way to install is via cloning this repository:
 user@local:~$ git clone --recurse-submodules https://github.com/mserajnik/hydrusrv-docker.git
 ```
 
-`--resurce-submodules` automatically fetches hydrusrv as well when cloning (it
+`--recurse-submodules` automatically fetches hydrusrv as well when cloning (it
 is included as a [submodule][git-submodules]).
 
 ### Dependencies
