@@ -91,6 +91,14 @@ You will need to do this again if you update or make changes to hydrusrv's
 configuration. Running it again should be significantly faster due to build
 caching.
 
+If you want to update hydrus server to a new version (which usually comes out
+once per week) you will have to disable build caching with the `--no-cache`
+flag, as Docker cannot know that there has been an update:
+
+```zsh
+user@local:hydrusrv-docker$ docker-compose build --no-cache
+```
+
 ### Running the containers
 
 After you have built the images, you can spin up new containers from them like
