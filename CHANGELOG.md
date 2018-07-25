@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Changed hydrus server configuration to run database connection in non-WAL
   mode
++ Added graceful shutdowns for hydrus server (it still exists with code 143,
+  but according to the output the server now stops correctly before the
+  container is shut down)
 + Updated hydrusrv
 
 ### Fixed

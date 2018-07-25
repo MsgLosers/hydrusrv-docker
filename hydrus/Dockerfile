@@ -12,8 +12,11 @@ curl -sL https://github.com/hydrusnetwork/hydrus/releases/latest \
 RUN tar zxvf $(ls | grep "Linux.-.Executable.tar.gz") --strip-components 1
 RUN rm $(ls | grep "Linux.-.Executable.tar.gz")
 
+COPY . .
+RUN chmod +x ./bootstrap.sh
+
 EXPOSE 45870/tcp
 EXPOSE 45871/tcp
 EXPOSE 45872/tcp
 
-CMD ./server -d="/data" --no_wal
+ENTRYPOINT ["/usr/src/app/bootstrap.sh"]
