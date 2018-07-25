@@ -16,4 +16,4 @@ EXPOSE 45870/tcp
 EXPOSE 45871/tcp
 EXPOSE 45872/tcp
 
-CMD ./server -d="/data"
+CMD ./server -d="/data" --no_wal

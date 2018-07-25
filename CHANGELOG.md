@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Added information about building without cache when updating hydrus server
 
+### Changed
+
++ Changed hydrus server configuration to run database connection in non-WAL
+  mode
+
 ### Fixed
 
 + Fixed typo in readme
