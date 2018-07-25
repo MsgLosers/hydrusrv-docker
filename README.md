@@ -28,7 +28,7 @@ The easiest way to install is via cloning this repository:
 user@local:~$ git clone --recurse-submodules https://github.com/mserajnik/hydrusrv-docker.git
 ```
 
-`--resurce-submodules` automatically fetches hydrusrv as well when cloning (it
+`--recurse-submodules` automatically fetches hydrusrv as well when cloning (it
 is included as a [submodule][git-submodules]).
 
 ### Dependencies
@@ -90,6 +90,14 @@ user@local:hydrusrv-docker$ docker-compose build
 You will need to do this again if you update or make changes to hydrusrv's
 configuration. Running it again should be significantly faster due to build
 caching.
+
+If you want to update hydrus server to a new version (which usually comes out
+once per week) you will have to disable build caching with the `--no-cache`
+flag, as Docker cannot know that there has been an update:
+
+```zsh
+user@local:hydrusrv-docker$ docker-compose build --no-cache
+```
 
 ### Running the containers
 
