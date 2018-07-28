@@ -47,15 +47,24 @@ user@local:hydrusrv-docker$ git pull
 
 ### Initial steps
 
-If you do not want to change the default configuration (recommended), start by
-copying the hydrusrv database template to the `data` directory (which will be
-mounted as a Docker volume later):
+Duplicate `docker-compose.yml.example` as `docker-compose.yml`:
+
+```zsh
+user@local:hydrusrv-docker$ cp docker-compose.yml.example docker-compose.yml
+```
+
+If you do not want to change the default Docker Compose configuration, you do
+not have to make any adjustments. Otherwise, adjust as needed. The rest of this
+guide assumes that you stick to the default configuration.
+
+Next, copy the hydrusrv database template to the `data` directory (which will
+be mounted as a Docker volume later):
 
 ```zsh
 user@local:hydrusrv-docker$ cp hydrusrv/storage/app.db.template data/app.db
 ```
 
-Next, just like when installing hydrusrv without Docker, create a copy of
+Just like when installing hydrusrv without Docker, create a copy of
 `.env.example` and call it `.env`:
 
 ```zsh
