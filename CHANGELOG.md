@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
++ Made it easier to use custom Docker Compose configurations
 + Updated hydrusrv
 
 ## [1.2.0] - 2018-07-25

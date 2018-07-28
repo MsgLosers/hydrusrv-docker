@@ -9,6 +9,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 install:
+  - cp docker-compose.yml.example docker-compose.yml
   - cp hydrusrv/storage/app.db.template data/app.db
   - cp hydrusrv/.env.example hydrusrv/.env
   - sed -i 's/APP_DB_PATH=.\/storage\/app.db/APP_DB_PATH=\/data\/app.db/g' hydrusrv/.env
