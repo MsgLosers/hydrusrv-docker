@@ -40,7 +40,7 @@ is included as a [submodule][git-submodules]).
 If you have installed via cloning the repository, you can update via Git:
 
 ```zsh
-user@local:hydrusrv-docker$ git pull
+user@local:hydrusrv-docker$ git pull --recurse-submodules
 ```
 
 ## Usage
