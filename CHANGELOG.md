@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 + Clarified update process
++ Updated hydrusrv
 
 ## [1.6.0] - 2018-07-31
 
