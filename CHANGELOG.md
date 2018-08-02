@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
++ Renamed `bootstrap.sh` to `docker-bootstrap.sh` to clarify purpose
 + Updated hydrusrv
 
 ## [1.9.0] - 2018-08-01

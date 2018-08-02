@@ -13,10 +13,10 @@ RUN tar zxvf $(ls | grep "Linux.-.Executable.tar.gz") --strip-components 1
 RUN rm $(ls | grep "Linux.-.Executable.tar.gz")
 
 COPY . .
-RUN chmod +x ./bootstrap.sh
+RUN chmod +x ./docker-bootstrap.sh
 
 EXPOSE 45870/tcp
 EXPOSE 45871/tcp
 EXPOSE 45872/tcp
 
-ENTRYPOINT ["/usr/src/app/bootstrap.sh"]
+ENTRYPOINT ["/usr/src/app/docker-bootstrap.sh"]
