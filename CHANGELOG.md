@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.10.0] - 2018-08-02
+
+### Changed
+
++ Renamed `bootstrap.sh` to `docker-bootstrap.sh` to clarify purpose
++ Updated hydrusrv
+
 ## [1.9.0] - 2018-08-01
 
 ### Changed
@@ -82,7 +89,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv-docker/compare/1.9.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv-docker/compare/1.10.0...develop
+[1.10.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.9.0...1.10.0
 [1.9.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.8.0...1.9.0
 [1.8.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.7.0...1.8.0
 [1.7.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.6.0...1.7.0
