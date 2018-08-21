@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
++ Changed Docker configuration to run container as non-root user
+
 ## [1.15.0] - 2018-08-19
 
 ### Changed

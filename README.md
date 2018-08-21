@@ -53,12 +53,28 @@ Duplicate `docker-compose.yml.example` as `docker-compose.yml`:
 user@local:hydrusrv-docker$ cp docker-compose.yml.example docker-compose.yml
 ```
 
-If you do not want to change the default Docker Compose configuration, you do
-not have to make any adjustments. Otherwise, adjust as needed. The rest of this
-guide assumes that you stick to the default configuration.
+The arguments `HOST_USER_ID` and `HOST_GROUP_ID` (careful, both exist twice,
+once per image) in `docker-compose.yml` should match the UID and GID of the
+user that is going to start the containers/own the `data` directory (which will
+be mounted as a Docker volume later) on the host system.
 
-Next, copy the hydrusrv database template to the `data` directory (which will
-be mounted as a Docker volume later):
+On a Linux-based host, any newly created files in in the `data` volume will get
+ownership by the user/group with the provided UID/GID – not only inside the
+containers, but also outside (on your host), making it inconvenient to access
+if it does not match the host user that should own the directory (and
+everything inside). This is because the containers share the same Linux kernel
+(and therefore the same UIDs/GIDs) with your host system.
+
+If you are on macOS or Windows instead, `HOST_USER_ID` and `HOST_GROUP_ID` do
+not really matter and can be kept at their defaults because the UIDs/GIDs are
+not shared with the containers and any file created inside a volume will just
+get ownership by the user/group that started the containers on the host system.
+
+If you do not want to change the default Docker Compose configuration, you do
+not have to make any additional adjustments. Otherwise, adjust as needed. The
+rest of this guide assumes that you stick to the default configuration.
+
+Next, copy the hydrusrv database template to the `data` directory:
 
 ```zsh
 user@local:hydrusrv-docker$ cp hydrusrv/storage/app.db.template data/app.db
@@ -79,13 +95,13 @@ files:
 ```
 PORT=8000
 
-APP_DB_PATH=/data/app.db
+APP_DB_PATH=/usr/src/app/data/app.db
 
-HYDRUS_SERVER_DB_PATH=/data/server.db
-HYDRUS_MASTER_DB_PATH=/data/server.master.db
-HYDRUS_MAPPINGS_DB_PATH=/data/server.mappings.db
+HYDRUS_SERVER_DB_PATH=/usr/src/app/data/server.db
+HYDRUS_MASTER_DB_PATH=/usr/src/app/data/server.master.db
+HYDRUS_MAPPINGS_DB_PATH=/usr/src/app/data/server.mappings.db
 
-HYDRUS_FILES_PATH=/data/server_files
+HYDRUS_FILES_PATH=/usr/src/app/data/server_files
 ```
 
 ### Building the images

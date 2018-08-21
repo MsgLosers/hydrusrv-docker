@@ -2,6 +2,19 @@ FROM debian:latest
 
 RUN apt-get update && apt-get install -y ffmpeg curl wget
 
+ARG HOST_USER_ID=1000
+ARG HOST_GROUP_ID=1000
+
+ENV HOST_USER_ID=$HOST_USER_ID
+ENV HOST_GROUP_ID=$HOST_GROUP_ID
+
+RUN if [ $(getent group ${HOST_GROUP_ID}) ]; then \
+    useradd -r -u ${HOST_USER_ID} hydrus; \
+  else \
+    groupadd -g ${HOST_GROUP_ID} hydrus && \
+    useradd -r -u ${HOST_USER_ID} -g hydrus hydrus; \
+  fi
+
 WORKDIR /usr/src/app
 
 RUN wget "https://www.github.com$( \
@@ -15,8 +28,12 @@ RUN rm $(ls | grep "Linux.-.Executable.tar.gz")
 COPY . .
 RUN chmod +x ./docker-bootstrap.sh
 
+RUN chown -R hydrus:hydrus /usr/src/app
+
 EXPOSE 45870/tcp
 EXPOSE 45871/tcp
 EXPOSE 45872/tcp
+
+USER hydrus
 
 ENTRYPOINT ["/usr/src/app/docker-bootstrap.sh"]
