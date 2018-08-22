@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.16.0] - 2018-08-22
+
+### Changed
+
++ Changed Docker configuration to run container as non-root user
++ Updated hydrusrv
+
 ## [1.15.0] - 2018-08-19
 
 ### Changed
@@ -119,7 +126,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv-docker/compare/1.15.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv-docker/compare/1.16.0...develop
+[1.16.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.15.0...1.16.0
 [1.15.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.14.0...1.15.0
 [1.14.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.13.0...1.14.0
 [1.13.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.12.0...1.13.0

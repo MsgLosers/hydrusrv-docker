@@ -1,20 +1,31 @@
 version: '3.6'
+
 services:
+
   hydrus:
-    build: ./hydrus
+    build:
+      context: ./hydrus
+      args:
+        HOST_USER_ID: 1000
+        HOST_GROUP_ID: 1000
     restart: always
     ports:
       - '45870:45870'
       - '45871:45871'
       - '45872:45872'
     volumes:
-      - './data:/data'
+      - './data:/usr/src/app/data'
+
   hydrusrv:
-    build: ./hydrusrv
+    build:
+      context: ./hydrusrv
+      args:
+        HOST_USER_ID: 1000
+        HOST_GROUP_ID: 1000
     depends_on:
       - hydrus
     restart: always
     ports:
       - '8000:8000'
     volumes:
-      - './data:/data'
+      - './data:/usr/src/app/data'
