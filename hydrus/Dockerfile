@@ -18,9 +18,9 @@ RUN if [ $(getent group ${HOST_GROUP_ID}) ]; then \
 WORKDIR /usr/src/app
 
 RUN wget "https://www.github.com$( \
-curl -sL https://github.com/hydrusnetwork/hydrus/releases/latest \
-| grep 'Linux.-.Executable.tar.gz' \
-| sed -n 's/.*href="\([^"]*\).*/\1/p')"
+  curl -sL https://github.com/hydrusnetwork/hydrus/releases/latest \
+  | grep 'Linux.-.Executable.tar.gz' \
+  | sed -n 's/.*href="\([^"]*\).*/\1/p')"
 
 RUN tar zxvf $(ls | grep "Linux.-.Executable.tar.gz") --strip-components 1
 RUN rm $(ls | grep "Linux.-.Executable.tar.gz")
