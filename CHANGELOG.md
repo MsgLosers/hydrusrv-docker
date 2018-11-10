@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.25.0] - 2018-11-10
+
+### Changed
+
++ Updated hydrusrv
+
 ## [1.24.0] - 2018-11-08
 
 ### Changed
@@ -179,7 +185,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv-docker/compare/1.24.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv-docker/compare/1.25.0...develop
+[1.25.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.24.0...1.25.0
 [1.24.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.23.0...1.24.0
 [1.23.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.22.0...1.23.0
 [1.22.0]: https://github.com/mserajnik/hydrusrv-docker/compare/1.21.0...1.22.0
