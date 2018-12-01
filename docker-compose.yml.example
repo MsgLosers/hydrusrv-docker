@@ -1,31 +1,64 @@
-version: '3.6'
+version: '3.7'
 
 services:
 
-  hydrus:
-    build:
-      context: ./hydrus
-      args:
-        HOST_USER_ID: 1000
-        HOST_GROUP_ID: 1000
+  hydrus-server:
+    image: mserajnik/hydrus-server-docker:332
     restart: always
     ports:
       - '45870:45870'
       - '45871:45871'
       - '45872:45872'
     volumes:
-      - './data:/usr/src/app/data'
+      - hydrusrv-docker-data:/data
 
   hydrusrv:
-    build:
-      context: ./hydrusrv
-      args:
-        HOST_USER_ID: 1000
-        HOST_GROUP_ID: 1000
+    image: mserajnik/hydrusrv:4.0.0
     depends_on:
-      - hydrus
+      - hydrus-server
     restart: always
     ports:
       - '8000:8000'
     volumes:
-      - './data:/usr/src/app/data'
+      - hydrusrv-docker-data:/data
+    environment:
+      - NODE_ENV=production
+      - URL=http://localhost:8000
+      - PORT=8000
+      - API_BASE=/api
+      - MEDIA_BASE=/media
+      - AUTHENTICATION_DB_PATH=/data/authentication.db
+      - CONTENT_DB_PATH=/data/content.db
+      - DB_WAL_SIZE=10
+      - DB_CHECKPOINT_INTERVAL=3600
+      - NUMBER_OF_WORKERS=
+      - REGISTRATION_ENABLED=true
+      - AUTHENTICATION_REQUIRED=true
+      - MIN_PASSWORD_LENGTH=16
+      - FILES_PER_PAGE=42
+      - TAGS_PER_PAGE=42
+      - AUTOCOMPLETE_LIMIT=10
+      - ACCESS_LOGGING_ENABLED=false
+      - OVERRIDE_ACCESS_LOGFILE_PATH=/data/hydrusrv-logs/access.log
+      - ALLOW_CROSS_DOMAIN=false
+      - HYDRUS_FILES_PATH=/data/server_files
+
+  hydrusrv-sync:
+    image: mserajnik/hydrusrv-sync:1.0.0
+    depends_on:
+      - hydrusrv
+    restart: always
+    volumes:
+      - hydrusrv-docker-data:/data
+    environment:
+      - HYDRUSRV_CONTENT_DB_PATH=/data/content.db
+      - HYDRUS_SERVER_DB_PATH=/data/server.db
+      - HYDRUS_MASTER_DB_PATH=/data/server.master.db
+      - HYDRUS_MAPPINGS_DB_PATH=/data/server.mappings.db
+      - HYDRUS_TAG_REPOSITORY=2
+      - HYDRUS_FILE_REPOSITORY=3
+      - HYDRUS_SUPPORTED_MIME_TYPES=1,2,3,4,9,14,18,20,21,23,25,26,27
+      - DOCKER_CRON_SCHEDULE=0 4 * * *
+
+volumes:
+  hydrusrv-docker-data:

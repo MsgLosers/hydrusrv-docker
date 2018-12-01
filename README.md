@@ -1,20 +1,22 @@
-# hydrusrv-docker [![Build status][travis-badge]][travis-url]
+# hydrusrv-docker [![Build status][travis-badge]][travis]
 
-> A simple Docker Compose setup to manage running hydrus server and hydrusrv
+> A simple Docker Compose setup to manage running hydrus server, hydrusrv and
+> hydrusrv-sync
 
 This is a [Docker Compose][docker-compose] setup to run
-[hydrus server][hydrus-server] and [hydrusrv][hydrusrv] together. It uses a
-shared volume between the two containers that contains the databases and files
-of hydrus server as well as the database of hydrusrv.
+[hydrus server][hydrus-server], [hydrusrv][hydrusrv] and
+[hydrusrv-sync][hydrusrv-sync] together. It shares a volume between the three
+containers that contains the databases and files of hydrus server as well as
+the databasees of hydrusrv.
 
 ## Table of contents
 
 + [Install](#install)
   + [Dependencies](#dependencies)
   + [Updating](#updating)
+    + [Upgrading from 1.x to 2.x](#upgrading-from-1x-to-2x)
 + [Usage](#usage)
-  + [Initial steps](#initial-steps)
-  + [Building the images](#building-the-images)
+  + [Configuration](#configuration)
   + [Running the containers](#running-the-containers)
 + [Maintainer](#maintainer)
 + [Contribute](#contribute)
@@ -25,11 +27,8 @@ of hydrus server as well as the database of hydrusrv.
 The easiest way to install is via cloning this repository:
 
 ```zsh
-user@local:~$ git clone --recurse-submodules https://github.com/mserajnik/hydrusrv-docker.git
+user@local:~$ git clone https://github.com/mserajnik/hydrusrv-docker.git
 ```
-
-`--recurse-submodules` automatically fetches hydrusrv as well when cloning (it
-is included as a [submodule][git-submodules]).
 
 ### Dependencies
 
@@ -40,12 +39,46 @@ is included as a [submodule][git-submodules]).
 If you have installed via cloning the repository, you can update via Git:
 
 ```zsh
-user@local:hydrusrv-docker$ git pull --recurse-submodules
+user@local:hydrusrv-docker$ git pull
 ```
+
+hydrusrv-docker follows [semantic versioning][semantic-versioning] and any
+breaking changes that require additional attention will be released under a new
+major version (e.g., `2.0.0`). Minor version updates (e.g., `1.1.0` or `1.2.0`)
+are therefore always safe to simply install via the routine mentioned before.
+
+When necessary, this section will be expanded with upgrade guides to new major
+versions.
+
+#### Upgrading from 1.x to 2.x
+
+With `2.0.0`, compatibility for hydrusrv `4.x` and hydrusrv-sync has been
+added. Since [hydrus server][hydrus-server-docker], [hydrusrv][hydrusrv-docker]
+and [hydrusrv-sync][hydrusrv-sync-docker] are now all available on
+[Docker Hub][docker-hub], hydrusrv-docker can just use those images instead of
+forcing the user to build them himself.
+
+All three containers can be configured fully via `docker-compose.yml` (no more
+editing hydrusrv's `.env` file) and those changes apply on container creation
+instead of on image build which makes it a lot faster and more convenient to
+adjust settings. Therefore, you need to replicate the settings you would have
+set via hydrusrv's `.env` before in `docker-compose.yml` and also configure
+hydrusrv-sync.
+
+Finally, instead of using a bind mount, the recommended way to persist data is
+now via named volume. The easiest way to move your existing data to the volume
+is to spin up the containers and shut them down again – this will create the
+named volume on the first startup. Next, go to the volume directory on the host
+machine (usually `/var/lib/docker/volumes/<volume name>`) and replace all the
+data inside with your existing contents in the `data` directory. Lastly, rename
+your application database (usually `app.db`) to `authentication.db` to finish
+the migration (or simply delete `app.db` if you do not care about losing any
+existing users/tokens – in that case, hydrusrv will create a new
+`authentication.db` itself on the next startup).
 
 ## Usage
 
-### Initial steps
+### Configuration
 
 Duplicate `docker-compose.yml.example` as `docker-compose.yml`:
 
@@ -53,101 +86,52 @@ Duplicate `docker-compose.yml.example` as `docker-compose.yml`:
 user@local:hydrusrv-docker$ cp docker-compose.yml.example docker-compose.yml
 ```
 
-The arguments `HOST_USER_ID` and `HOST_GROUP_ID` (careful, both exist twice,
-once per image) in `docker-compose.yml` should match the UID and GID of the
-user that is going to start the containers/own the `data` directory (which will
-be mounted as a Docker volume later) on the host system.
+First, you have to set the volume used by the containers. Take a look at the
+`volumes` section in each service block. It is recommended to stick to the
+default setup (using a named volume) for performance and ease of use. If you
+decide to do so and are happy with the volume name (`hydrusrv-docker-data`),
+you do not have to change anything for this step.
 
-On a Linux-based host, any newly created files in in the `data` volume will get
-ownership by the user/group with the provided UID/GID – not only inside the
-containers, but also outside (on your host), making it inconvenient to access
-if it does not match the host user that should own the directory (and
-everything inside). This is because the containers share the same Linux kernel
-(and therefore the same UIDs/GIDs) with your host system.
+You can also use a bind mount instead of a volume if you wish. Whatever you do,
+make sure to use the mount point `/data` inside the containers to avoid issues
+and do not forget to also adjust the top-level `volumes` block (outside the
+three service blocks) if you rename the default volume.
 
-If you are on macOS or Windows instead, `HOST_USER_ID` and `HOST_GROUP_ID` do
-not really matter and can be kept at their defaults because the UIDs/GIDs are
-not shared with the containers and any file created inside a volume will just
-get ownership by the user/group that started the containers on the host system.
+Next, take a look at the settings for [hydrusrv][hydrusrv-configuration] and
+[hydrusrv-sync][hydrusrv-sync-configuration] and adjust the `environment`
+sections of both services as needed. The paths for database files, access log
+file and hydrus server media files are already set up to work with the default
+volume setup. If you change the `PORT` environment variable of hydrusrv, make
+sure to also adjust its `ports` section accordingly.
 
-If you do not want to change the default Docker Compose configuration, you do
-not have to make any additional adjustments. Otherwise, adjust as needed. The
-rest of this guide assumes that you stick to the default configuration.
-
-Next, copy the hydrusrv database template to the `data` directory:
-
-```zsh
-user@local:hydrusrv-docker$ cp hydrusrv/storage/app.db.template data/app.db
-```
-
-Just like when installing hydrusrv without Docker, create a copy of
-`.env.example` and call it `.env`:
-
-```zsh
-user@local:hydrusrv-docker$ cp hydrusrv/.env.example hydrusrv/.env
-```
-
-In this file, you can now adjust hydrusrv settings to your liking as described
-[here][hydrusrv-configuration]. Make sure to use the following values for the
-given configuration options if you do not want to adjust any Docker-related
-files:
-
-```
-PORT=8000
-
-APP_DB_PATH=/usr/src/app/data/app.db
-
-HYDRUS_SERVER_DB_PATH=/usr/src/app/data/server.db
-HYDRUS_MASTER_DB_PATH=/usr/src/app/data/server.master.db
-HYDRUS_MAPPINGS_DB_PATH=/usr/src/app/data/server.mappings.db
-
-HYDRUS_FILES_PATH=/usr/src/app/data/server_files
-```
-
-### Building the images
-
-To build the images, use Docker Compose:
-
-```zsh
-user@local:hydrusrv-docker$ docker-compose build
-```
-
-You will need to do this again if you update or make changes to hydrusrv's
-configuration. Running it again should be significantly faster due to build
-caching.
-
-If you want to update hydrus server to a new version (which usually comes out
-once per week) you will have to disable build caching with the `--no-cache`
-flag, as Docker cannot know that there has been an update:
-
-```zsh
-user@local:hydrusrv-docker$ docker-compose build --no-cache
-```
+Finally, the hydrusrv-sync container will run syncs in intervals using a cron
+job. By default, the schedule is `0 4 * * *`, which translates to every day at
+4am. If you wish to change this schedule, simply adjust the
+`DOCKER_CRON_SCHEDULE` environment variable in the hydrusrv-sync service block.
 
 ### Running the containers
 
-After you have built the images, you can spin up new containers from them like
-this:
+You can spin up the containers like this:
 
 ```zsh
 user@local:hydrusrv-docker$ docker-compose up -d
 ```
 
 To check if they have not crashed when starting (this would indicate a
-configuration error), you can use a built-in Docker command:
+configuration error), you can use the following command:
 
 ```zsh
 user@local:hydrusrv-docker$ docker ps
 ```
 
-This should show two running containers (unless you are running additional
-ones), one for hydrus server and one for hydrusrv.
+This should show three running containers (unless you are running additional
+ones); one for hydrus server, one for hydrusrv and one for hydrusrv-sync.
 
-Alternatively, you can also open a web browser and hit `https://0.0.0.0:45870`
-for hydrus (needs to be `https` – your browser will likely show a certificate
+Alternatively, you can also open a web browser and hit `https:/localhost:45870`
+for hydrus (needs to be `https`; your browser will likely show a certificate
 issue, but that is because hydrus uses a self-signed one – you can safely
-ignore that warning) and `http://0.0.0.0:8000/api` for hydrusrv to see if they
-are working correctly.
+ignore that warning) and `http://localhost:8000/api` for hydrusrv to see if
+they are working correctly.
 
 To stop the containers and remove them, use the following command:
 
@@ -155,32 +139,53 @@ To stop the containers and remove them, use the following command:
 user@local:hydrusrv-docker$ docker-compose down
 ```
 
+You will have to do this every time you update hydrusrv-docker. Simply running
+`docker-compose up -d` again afterwards will re-create the containers from the
+updated images.
+
+From time to time, you will want to remove old and no longer used images and
+containers. To do this, you can use the following command:
+
+```zsh
+user@local:hydrusrv-docker$ docker system prune
+```
+
+I recommend doing this after updating and re-creating the containers so it will
+automatically remove anything that is no longer in use.
+
 For further information, take a look at the
 [Docker Compose documentation][docker-compose].
 
 ## Maintainer
 
-[mserajnik][maintainer-url]
+[mserajnik][maintainer]
 
 ## Contribute
 
 You are welcome to help out!
 
-[Open an issue][issues-url] or submit a pull request.
+[Open an issue][issues] or submit a pull request.
 
 ## License
 
 [MIT](LICENSE.md) © Michael Serajnik
 
-[travis-url]: https://travis-ci.com/mserajnik/hydrusrv-docker
+[travis]: https://travis-ci.com/mserajnik/hydrusrv-docker
 [travis-badge]: https://travis-ci.com/mserajnik/hydrusrv-docker.svg
 
 [hydrus-server]: http://hydrusnetwork.github.io/hydrus
 [hydrusrv]: https://github.com/mserajnik/hydrusrv
+[hydrusrv-sync]: https://github.com/mserajnik/hydrusrv-sync
 [docker-compose]: https://docs.docker.com/compose/
-[git-submodules]: https://git-scm.com/docs/git-submodule
+[semantic-versioning]: https://semver.org/
+[hydrus-server-docker]: https://hub.docker.com/r/mserajnik/hydrus-server-docker/
+[hydrusrv-docker]: https://hub.docker.com/r/mserajnik/hydrusrv/
+[hydrusrv-sync-docker]: https://hub.docker.com/r/mserajnik/hydrusrv-sync/
+[docker-hub]: https://hub.docker.com
+[hydrusrv-configuration]: https://github.com/mserajnik/hydrusrv#configuration
+[hydrusrv-sync-configuration]: https://github.com/mserajnik/hydrusrv-sync#configuration
 [docker]: https://www.docker.com/
 [hydrusrv-configuration]: https://github.com/mserajnik/hydrusrv#configuration
 
-[maintainer-url]: https://github.com/mserajnik
-[issues-url]: https://github.com/mserajnik/hydrusrv-docker/issues/new
+[maintainer]: https://github.com/mserajnik
+[issues]: https://github.com/mserajnik/hydrusrv-docker/issues/new

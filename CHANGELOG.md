@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
++ Added compatibility for hydrusrv `4.x` and hydrusrv-sync
+
+### Changed
+
++ Switched to using Docker Hub images
+
 ## [1.29.0] - 2018-11-25
 
 ### Changed
