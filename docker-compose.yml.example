@@ -13,7 +13,7 @@ services:
       - hydrusrv-docker-data:/data
 
   hydrusrv:
-    image: mserajnik/hydrusrv:4.0.0
+    image: mserajnik/hydrusrv:4.1.0
     depends_on:
       - hydrus-server
     restart: always
@@ -44,7 +44,7 @@ services:
       - HYDRUS_FILES_PATH=/data/server_files
 
   hydrusrv-sync:
-    image: mserajnik/hydrusrv-sync:1.0.0
+    image: mserajnik/hydrusrv-sync:1.1.0
     depends_on:
       - hydrusrv
     restart: always
