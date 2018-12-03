@@ -42,6 +42,11 @@ If you have installed via cloning the repository, you can update via Git:
 user@local:hydrusrv-docker$ git pull
 ```
 
+After updating, compare your `docker-compose.yml` with
+`docker-compose.yml.example` in case that file has changed with the update and
+adjust your configuration accordingly. Most of the time, updates will bump the
+version of one or more of the services.
+
 hydrusrv-docker follows [semantic versioning][semantic-versioning] and any
 breaking changes that require additional attention will be released under a new
 major version (e.g., `2.0.0`). Minor version updates (e.g., `1.1.0` or `1.2.0`)
