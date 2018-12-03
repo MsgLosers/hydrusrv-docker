@@ -44,7 +44,7 @@ services:
       - HYDRUS_FILES_PATH=/data/server_files
 
   hydrusrv-sync:
-    image: mserajnik/hydrusrv-sync:1.1.0
+    image: mserajnik/hydrusrv-sync:1.2.0
     depends_on:
       - hydrusrv
     restart: always
