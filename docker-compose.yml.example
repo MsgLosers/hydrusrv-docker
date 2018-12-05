@@ -43,7 +43,7 @@ services:
       - OVERRIDE_ACCESS_LOGFILE_PATH=/data/hydrusrv-logs/access.log
 
   hydrusrv-sync:
-    image: mserajnik/hydrusrv-sync:1.2.0
+    image: mserajnik/hydrusrv-sync:1.4.1
     depends_on:
       - hydrusrv
     restart: always
