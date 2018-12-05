@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   hydrus-server:
-    image: mserajnik/hydrus-server-docker:332
+    image: mserajnik/hydrus-server-docker:333
     restart: always
     ports:
       - '45870:45870'
@@ -13,7 +13,7 @@ services:
       - hydrusrv-docker-data:/data
 
   hydrusrv:
-    image: mserajnik/hydrusrv:4.2.1
+    image: mserajnik/hydrusrv:4.4.0
     depends_on:
       - hydrus-server
     restart: always
@@ -27,11 +27,12 @@ services:
       - PORT=8000
       - API_BASE=/api
       - MEDIA_BASE=/media
+      - ALLOW_CROSS_ORIGIN=false
       - AUTHENTICATION_DB_PATH=/data/authentication.db
       - CONTENT_DB_PATH=/data/content.db
-      - DB_WAL_SIZE=10
-      - DB_CHECKPOINT_INTERVAL=3600
+      - HYDRUS_FILES_PATH=/data/server_files
       - NUMBER_OF_WORKERS=
+      - DB_CHECKPOINT_INTERVAL=3600
       - REGISTRATION_ENABLED=true
       - AUTHENTICATION_REQUIRED=true
       - MIN_PASSWORD_LENGTH=16
@@ -40,11 +41,9 @@ services:
       - AUTOCOMPLETE_LIMIT=10
       - ACCESS_LOGGING_ENABLED=false
       - OVERRIDE_ACCESS_LOGFILE_PATH=/data/hydrusrv-logs/access.log
-      - ALLOW_CROSS_DOMAIN=false
-      - HYDRUS_FILES_PATH=/data/server_files
 
   hydrusrv-sync:
-    image: mserajnik/hydrusrv-sync:1.2.0
+    image: mserajnik/hydrusrv-sync:1.4.1
     depends_on:
       - hydrusrv
     restart: always
