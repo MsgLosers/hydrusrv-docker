@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Updated hydrusrv version
 + Updated hydrusrv-sync version
++ Updated hydrus server version
 
 ## [2.3.0] - 2018-12-04
 
