@@ -13,7 +13,7 @@ services:
       - hydrusrv-docker-data:/data
 
   hydrusrv:
-    image: mserajnik/hydrusrv:4.4.0
+    image: mserajnik/hydrusrv:5.0.0
     depends_on:
       - hydrus-server
     restart: always
@@ -27,7 +27,7 @@ services:
       - PORT=8000
       - API_BASE=/api
       - MEDIA_BASE=/media
-      - ALLOW_CROSS_ORIGIN=false
+      - CROSS_ORIGIN_ALLOWED=false
       - AUTHENTICATION_DB_PATH=/data/authentication.db
       - CONTENT_DB_PATH=/data/content.db
       - HYDRUS_FILES_PATH=/data/server_files
@@ -39,8 +39,10 @@ services:
       - FILES_PER_PAGE=42
       - TAGS_PER_PAGE=42
       - AUTOCOMPLETE_LIMIT=10
+      - COUNTS_ENABLED=false
+      - COUNTS_CACHING_ENABLED=false
       - ACCESS_LOGGING_ENABLED=false
-      - OVERRIDE_ACCESS_LOGFILE_PATH=/data/hydrusrv-logs/access.log
+      - ACCESS_LOGFILE_PATH_OVERRIDE=/data/hydrusrv-logs/access.log
 
   hydrusrv-sync:
     image: mserajnik/hydrusrv-sync:1.4.1
