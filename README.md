@@ -57,11 +57,11 @@ versions.
 
 #### Upgrading from 1.x to 2.x
 
-With `2.0.0`, compatibility for hydrusrv `4.x` and hydrusrv-sync has been
-added. Since [hydrus server][hydrus-server-docker], [hydrusrv][hydrusrv-docker]
-and [hydrusrv-sync][hydrusrv-sync-docker] are now all available on
-[Docker Hub][docker-hub], hydrusrv-docker can just use those images instead of
-forcing the user to build them himself.
+With `2.0.0`, compatibility for newer hydrusrv versions (`4.x`+) and
+hydrusrv-sync has been added. Since [hydrus server][hydrus-server-docker],
+[hydrusrv][hydrusrv-docker] and [hydrusrv-sync][hydrusrv-sync-docker] are now
+all available on [Docker Hub][docker-hub], hydrusrv-docker can just use those
+images instead of forcing the user to build them himself.
 
 All three containers can be configured fully via `docker-compose.yml` (no more
 editing hydrusrv's `.env` file) and those changes apply on container creation
@@ -70,16 +70,17 @@ adjust settings. Therefore, you need to replicate the settings you would have
 set via hydrusrv's `.env` before in `docker-compose.yml` and also configure
 hydrusrv-sync.
 
-Finally, instead of using a bind mount, the recommended way to persist data is
-now via named volume. The easiest way to move your existing data to the volume
-is to spin up the containers and shut them down again – this will create the
-named volume on the first startup. Next, go to the volume directory on the host
+Instead of using a bind mount, the recommended way to persist data is now via
+named volume. The easiest way to move your existing data to the volume is to
+spin up the containers and shut them down again – this will create the named
+volume on the first startup. Next, go to the volume directory on the host
 machine (usually `/var/lib/docker/volumes/<volume name>`) and replace all the
-data inside with your existing contents in the `data` directory. Lastly, rename
-your application database (usually `app.db`) to `authentication.db` to finish
-the migration (or simply delete `app.db` if you do not care about losing any
-existing users/tokens – in that case, hydrusrv will create a new
-`authentication.db` itself on the next startup).
+data inside with your existing contents in the `data` directory.
+
+Lastly, rename your application database (usually `app.db`) to
+`authentication.db` to finish the migration (or simply delete `app.db` if you
+do not care about losing any existing users/tokens – in that case, hydrusrv
+will create a new `authentication.db` itself on the next startup).
 
 ## Usage
 
