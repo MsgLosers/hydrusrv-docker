@@ -13,7 +13,7 @@ services:
       - hydrusrv-docker-data:/data
 
   hydrusrv:
-    image: mserajnik/hydrusrv:6.0.0
+    image: mserajnik/hydrusrv:7.0.0
     depends_on:
       - hydrus-server
     restart: always
