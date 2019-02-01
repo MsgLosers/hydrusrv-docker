@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   hydrus-server:
-    image: mserajnik/hydrus-server-docker:337
+    image: mserajnik/hydrus-server-docker:338
     restart: always
     ports:
       - '45870:45870'
