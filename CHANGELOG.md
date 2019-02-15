@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.15.0] - 2019-02-15
+
+### Changed
+
++ Decreased Compose file version to `3` since none of the `3.7` specific
+  features are used
+    + `2` would also work, but `3` remains compatible with swarm
+      mode
++ Updated hydrus server version
++ Updated hydrusrv version
++ Updated hydrusrv-sync version
+
 ## [2.14.0] - 2019-02-10
 
 ### Changed
@@ -321,7 +333,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv-docker/compare/2.14.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv-docker/compare/2.15.0...develop
+[2.15.0]: https://github.com/mserajnik/hydrusrv-docker/compare/2.14.0...2.15.0
 [2.14.0]: https://github.com/mserajnik/hydrusrv-docker/compare/2.13.0...2.14.0
 [2.13.0]: https://github.com/mserajnik/hydrusrv-docker/compare/2.12.0...2.13.0
 [2.12.0]: https://github.com/mserajnik/hydrusrv-docker/compare/2.11.0...2.12.0
