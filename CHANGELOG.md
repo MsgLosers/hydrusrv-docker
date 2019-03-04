@@ -7,14 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
++ Updated hydrus server version
+
 ## [2.15.0] - 2019-02-15
 
 ### Changed
 
 + Decreased Compose file version to `3` since none of the `3.7` specific
   features are used
-    + `2` would also work, but `3` remains compatible with swarm
-      mode
+  + `2` would also work, but `3` remains compatible with swarm
+    mode
 + Updated hydrus server version
 + Updated hydrusrv version
 + Updated hydrusrv-sync version
