@@ -3,6 +3,8 @@
 > A simple Docker Compose setup to manage running hydrus server, hydrusrv and
 > hydrusrv-sync
 
+__Adandoned: hydrusrv-docker is no longer maintained.__
+
 This is a [Docker Compose][docker-compose] setup to run
 [hydrus server][hydrus-server], [hydrusrv][hydrusrv] and
 [hydrusrv-sync][hydrusrv-sync] together. It shares a volume between the three
